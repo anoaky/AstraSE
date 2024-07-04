@@ -5,14 +5,14 @@ from database import AstraDBConnection
 
 class QuoteView(discord.ui.View):
     
-    def __init__(self, interaction: discord.Interaction, target: discord.Member | discord.User, raw: list[tuple[str, int]], perPage: int = 10):
+    def __init__(self, interaction: discord.Interaction, target: discord.Member | discord.User, raw: list[tuple[str, int]], perPage: int = 5):
         self.interaction = interaction
         self._raw = raw
         self.total_pages = (len(raw) // perPage) + 1
         self.page = 1
         self.per_page = perPage
         self.target = target
-        super().__init__()
+        super().__init__(timeout=60)
         
     async def show(self):
         embed = await self.build_view()
@@ -23,9 +23,7 @@ class QuoteView(discord.ui.View):
         start, end = (self.page - 1) * self.per_page, self.page * self.per_page
         embed = discord.Embed(title=self.target, description='')
         for (msg, ind) in self._raw[start:end]:
-            if len(msg) > 50:
-                msg = msg[0:50] + '...'
-            embed.description += f'#{ind}: "{msg}"\n'
+            embed.description += f'#{ind}: "{msg}"\n\n'
         embed.set_author(name=f'Requested by {self.interaction.user}')
         embed.set_footer(text=f'Page {self.page} of {self.total_pages}')
         embed.set_thumbnail(url=self.target.display_avatar.url)
@@ -41,7 +39,6 @@ class QuoteView(discord.ui.View):
         self.children[1].disabled = (self.total_pages == 1 or self.page == 1)
         self.children[2].disabled = (self.total_pages == 1 or self.page == self.total_pages)
         self.children[3].disabled = (self.total_pages == 1 or self.page >= self.total_pages - 1)
-        
         
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         return interaction.user.id == self.interaction.user.id
