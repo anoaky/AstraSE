@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 /data.py
 /astra.db
+/AstraSE.pyproj
+/AstraSE.sln
