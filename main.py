@@ -2,65 +2,40 @@ import discord
 import discord.ext.commands as commands
 import discord.app_commands as app_commands
 
+from database import AstraDBConnection
 from data import *
-from handler import AstraHandler, QuoteView
+from groups import *
 
 intents = discord.Intents.default()
 intents.message_content = True
 
 bot = commands.Bot('!', intents=intents)
 
+async def command_setup():
+    print('Resyncing commands...')
+    await bot.add_cog(DebugGroup(bot))
+    await bot.add_cog(QuoteGroup(bot))
+    await bot.tree.sync()
+    print('Done!')
+
 def is_mom():
     def predicate(ctx):
-        return ctx.message.author.id == 188832409737756675
+        return ctx.message.author.id == MOM
     return commands.check(predicate)
 
 @bot.event
 async def setup_hook():
-    await bot.tree.sync()
+    await command_setup()
 
 @bot.event
 async def on_ready():
+    AstraDBConnection()
     print('Ready to go!')
     
 @bot.command()
 @is_mom()
 async def force_resync(ctx):
-    print('Resync in progress...')
-    await bot.tree.sync()
-    print('Done!')
-    
-@bot.tree.context_menu(name='Quote Message')
-async def quote_msg_ctx(interaction: discord.Interaction, msg: discord.Message):
-    await AstraHandler.add_quote(msg.author, msg)
-    await interaction.response.send_message(f'Quoted {msg.author.mention} saying "{msg.clean_content}"', ephemeral=False)
-    
-@bot.tree.context_menu(name='Show Quotes')
-async def show_quotes_ctx(interaction: discord.Interaction, user: discord.Member):
-    raw = await AstraHandler.read_quotes(user)
-    if len(raw) == 0:
-        await interaction.response.send_message('No quotes found.', ephemeral=True)
-    else:
-        view = QuoteView(interaction, user, raw)
-        await view.show()
-        
-@bot.tree.command(description='Add a quote')
-@app_commands.describe(user='The user to quote')
-@app_commands.describe(msg='The quote to add')
-async def quote(interaction: discord.Interaction, user: discord.Member, msg: str):
-    await AstraHandler.add_quote(user, msg)
-    await interaction.response.send_message(f'Quoted {user.mention} saying "{msg}"')
-    
-@bot.tree.command(description='List quotes')
-@app_commands.describe(user='The user to query')
-async def list(interaction: discord.Interaction, user: discord.Member):
-    # this could be done better
-    raw = await AstraHandler.read_quotes(user)
-    if len(raw) == 0:
-        await interaction.response.send_message('No quotes found.', ephemeral=True)
-    else:
-        view = QuoteView(interaction, user, raw)
-        await view.show()
+    await command_setup()
         
 @bot.tree.command(description='Version, changelog, and other info')
 async def info(interaction: discord.Interaction):

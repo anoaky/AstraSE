@@ -365,3 +365,5 @@ FodyWeavers.xsd
 /astra.db
 /AstraSE.pyproj
 /AstraSE.sln
+/migration.py
+/server_config.json

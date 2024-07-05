@@ -8,7 +8,7 @@ class QuoteView(discord.ui.View):
     def __init__(self, interaction: discord.Interaction, target: discord.Member | discord.User, raw: list[tuple[str, int]], perPage: int = 5):
         self.interaction = interaction
         self._raw = raw
-        self.total_pages = (len(raw) // perPage) + 1
+        self.total_pages = (len(raw) // perPage) + 1 if (len(raw) % perPage != 0) else (len(raw) // perPage)
         self.page = 1
         self.per_page = perPage
         self.target = target
@@ -72,15 +72,32 @@ class QuoteView(discord.ui.View):
 class AstraHandler:
     
     @staticmethod
-    async def add_quote(user: discord.Member | discord.User, msg: str | discord.Message):
-        loop = asyncio.get_event_loop()
-        conn = await loop.run_in_executor(None, AstraDBConnection.__new__, AstraDBConnection)
+    async def add_quote(interaction: discord.Interaction, user: discord.Member | discord.User, msg: str):
         if isinstance(msg, discord.Message):
             msg = msg.clean_content
-        await loop.run_in_executor(None, conn.add_quote, user.id, msg)
+        if await AstraHandler.does_quote_exist(user, msg):
+            await interaction.response.send_message('Quote already present.', ephemeral=True)
+        else:
+            AstraDBConnection.add_quote(user.id, msg)
+            await interaction.response.send_message(f'Quoted {user.mention} saying "{msg}"')
         
     @staticmethod
-    async def read_quotes(fromUser: discord.Member | discord.User):
-        loop = asyncio.get_event_loop()
-        conn = await loop.run_in_executor(None, AstraDBConnection.__new__, AstraDBConnection)
-        return await loop.run_in_executor(None, conn.read_quotes, fromUser.id)
+    async def read_quotes(interaction: discord.Interaction, fromUser: discord.Member | discord.User):
+        raw = AstraDBConnection.read_quotes(fromUser.id)
+        if len(raw) == 0:
+            await interaction.response.send_message('No quotes found.', ephemeral=True)
+        else:
+            view = QuoteView(interaction, fromUser, raw)
+            await view.show()
+    
+    @staticmethod
+    async def does_quote_exist(fromUser: discord.Member | discord.User, withMsg: str | discord.Message, /):
+        if isinstance(withMsg, discord.Message):
+            withMsg = withMsg.clean_content
+        result = AstraDBConnection.search_quote(fromUser.id, withMsg)
+        print(result)
+        return len(result) > 0
+    
+    @staticmethod
+    async def debug_remove_quote(withIdent: int):
+        AstraDBConnection.delete_quote(withIdent)
