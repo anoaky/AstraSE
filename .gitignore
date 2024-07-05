@@ -367,3 +367,4 @@ FodyWeavers.xsd
 /AstraSE.sln
 /migration.py
 /server_config.json
+/generation/model.py

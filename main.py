@@ -42,11 +42,10 @@ async def info(interaction: discord.Interaction):
     await interaction.response.send_message(
         """
         **ASTRA: SE**
-        A Simple Text Recording Assistant: Slash Edition v1.0
+        A Simple Text Recording Assistant: Slash Edition v1.1
 
         **New features:**
-        - Slash commands! Use `/quote` and `/list` to manually add and list quotes
-        - Context commands! Right-click on a message, then go to Apps > Add Quote to quickly add a quote from a Discord message. Similarly, right-click on a user and go to Apps > Show Quotes to show a user's quotes.
+        - QUOTE GENERATION IS **BACK**. Run `/quote gen` to EXPERIENCE THE MAGIC.
 
         **NB:** Currently being hosted on my PC, so will probably go offline at times. Do not be alarmed, for She will Return.""", ephemeral=True)
 

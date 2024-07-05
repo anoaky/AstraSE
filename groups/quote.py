@@ -4,6 +4,7 @@ import discord.ext.commands as commands
 from discord import app_commands
 
 from handler import AstraHandler
+from generation import AstraMarkovModel
 
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=True)
 class QuoteGroup(commands.GroupCog, name='quote', group_name='quote'):
@@ -34,3 +35,8 @@ class QuoteGroup(commands.GroupCog, name='quote', group_name='quote'):
     @app_commands.describe(user='Target user')
     async def quote_list_cmd(self, interaction: discord.Interaction, user: discord.User | discord.Member):
         await AstraHandler.read_quotes(interaction, user)
+        
+    @app_commands.command(name='gen', description='Generate a quote')
+    async def quote_gen(self, interaction: discord.Interaction):
+        sentence = AstraMarkovModel().make_sentence()
+        await interaction.response.send_message(sentence)

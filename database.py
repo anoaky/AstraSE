@@ -51,3 +51,9 @@ class AstraDBConnection:
         cur.execute('delete from quotes where ind = ?', (withIdent,))
         con.commit()
         con.close()
+        
+    @staticmethod
+    def query_all():
+        con, cur = _connect()
+        res = cur.execute('select msg from quotes').fetchall()
+        return [v[0] for v in res]
