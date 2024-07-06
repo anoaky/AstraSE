@@ -1,4 +1,3 @@
-# ASTRA : SE
-# A Simple Text Replacement Assistant: Special Edition
+# A Simple Text Recording Assistant (ASTRA): Special Edition
 
 Readme in progress.
