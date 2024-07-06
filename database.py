@@ -8,7 +8,6 @@ def _connect():
 class AstraDBConnection:
     # a question for my past self: why?
     _instance = None
-    ind = 0
     
     def __new__(cls):
         if cls._instance is None:
@@ -18,16 +17,15 @@ class AstraDBConnection:
             ind = cur.execute('select max(ind) from quotes').fetchall()[0][0]
             if ind is None:
                 ind = 0
-            cls.ind = ind
-            print(f'Picking up at index {cls.ind}')
+            cls._instance.ind = ind
+            print(f'Picking up at index {cls._instance.ind}')
             con.close()
         return cls._instance
     
-    @classmethod
-    def add_quote(cls, user: int, msg: str):
+    def add_quote(self, user: int, msg: str):
         con, cur = _connect()
-        cls.ind += 1
-        cur.execute('insert into quotes values(?, ?, ?)', (user, msg, cls.ind))
+        self.ind += 1
+        cur.execute('insert into quotes values(?, ?, ?)', (user, msg, self.ind))
         con.commit()
         con.close()
         
