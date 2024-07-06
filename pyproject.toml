@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools", "wheel", "discord", "markovify"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "astra-bot"
+version = "1.1"
+authors = [
+	{ name="Anokhi Suresh", email="anokhi.suresh@mail.mcgill.ca" },
+]
+description = "Discord bot capable of storing 'quotes' by users and simple construction of humorous sentences."
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+	"Programming Language :: Python :: 3",
+	"License :: MIT License",
+	"Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/anoaky/AstraSE"
+Issues = "https://github.com/anoaky/AstraSE/issues"

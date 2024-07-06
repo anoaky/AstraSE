@@ -3,7 +3,7 @@ import discord.ext.commands as commands
 
 from discord import app_commands
 
-from handler import AstraHandler
+from connections import AstraHandler
 from generation import AstraMarkovModel
 
 @app_commands.allowed_contexts(guilds=True, dms=False, private_channels=True)

@@ -1,7 +1,7 @@
 import numpy as np
 import markovify
 
-from database import AstraDBConnection
+from connections import AstraDBConnection
 
 class AstraMarkovModel:
     _instance = None

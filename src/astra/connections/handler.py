@@ -1,7 +1,7 @@
 ﻿import discord
-import asyncio
 
-from database import AstraDBConnection
+from connections import AstraDBConnection
+from generation import AstraMarkovModel
 
 class QuoteView(discord.ui.View):
     
@@ -78,8 +78,9 @@ class AstraHandler:
         if await AstraHandler.does_quote_exist(user, msg):
             await interaction.response.send_message('Quote already present.', ephemeral=True)
         else:
-            AstraDBConnection.add_quote(user.id, msg)
+            AstraDBConnection().add_quote(user.id, msg)
             await interaction.response.send_message(f'Quoted {user.mention} saying "{msg}"')
+            AstraMarkovModel().initialize_model()
         
     @staticmethod
     async def read_quotes(interaction: discord.Interaction, fromUser: discord.Member | discord.User):
