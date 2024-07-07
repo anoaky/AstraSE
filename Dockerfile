@@ -1,5 +1,5 @@
 FROM python:3.11-bullseye
-WORKDIR /astra-se
+WORKDIR /app
 COPY . .
 RUN pip install .
 CMD ["python3", "main.py"]
