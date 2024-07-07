@@ -22,6 +22,7 @@ jobs:
     needs: build-pkg
     environment: release
     steps:
+      - uses: actions/checkout@v4
       - name: Retrieve build
         uses: actions/download-artifact@v4
         with:
