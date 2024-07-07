@@ -1,7 +1,7 @@
 import sqlite3
 
 def _connect():
-    con = sqlite3.connect('astra.db')
+    con = sqlite3.connect('data/astra.db')
     cur = con.cursor()
     return con, cur
 
