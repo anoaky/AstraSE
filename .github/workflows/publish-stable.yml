@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build and Publish
+name: Make release
 
 on:
   push:
@@ -19,7 +19,9 @@ jobs:
     uses: ./.github/workflows/build-package.yml
   make-release:
     runs-on: ubuntu-latest
-    needs: build-pkg
+    needs: |
+      build-pkg
+      release-data
     environment: release
     steps:
       - name: Retrieve build
@@ -28,16 +30,18 @@ jobs:
           name: release-dist
           path: dist/
       - name: Get release title
+        id: title
         run: |
           source ./manifest ; echo "project_name=$(echo ${PROJECT_NAME})" >> $GITHUB_OUTPUT
       - name: Get tag
+        id: tag
         run: |
           source ./manifest ; echo "tag_name=$(echo ${TAG})" >> $GITHUB_OUTPUT
       - name: Make release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ PROJECT_NAME }} ${{ TAG_NAME }}
-          tag_name: ${{ TAG_NAME }}
+          name: ${{ steps.title.outputs.project_name }} ${{ steps.tag.outputs.tag_name }}
+          tag_name: ${{ steps.tag.outputs.tag_name }}
           body_path: ./CHANGELOG.txt
           files: |
             dist/**
