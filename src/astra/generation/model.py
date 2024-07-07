@@ -1,4 +1,3 @@
-import numpy as np
 import markovify
 
 from astra.connections import AstraDBConnection
@@ -14,7 +13,7 @@ class AstraMarkovModel:
         return cls._instance
         
     def initialize_model(self):
-        all_quotes = np.array(AstraDBConnection.query_all())
+        all_quotes = AstraDBConnection.query_all()
         quotes = '\n'.join(all_quotes)
         self._model = markovify.NewlineText(quotes).compile()
         
