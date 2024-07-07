@@ -1,0 +1,26 @@
+name: Publish Unstable
+
+on:
+  push:
+    branches:
+      master
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build-pkg:
+    uses: ./.github/workflows/build-package.yml
+  pypi-upload:
+    runs-on: ubuntu-latest
+    needs: build-pkg
+    permissions:
+      id-token: write
+    environment: publish
+    steps:
+      - name: Retrieve build
+        uses: actions/download-artifact@v4
+        with:
+          name: release-dist
+          path: dist/
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
