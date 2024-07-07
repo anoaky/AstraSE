@@ -1,3 +1,4 @@
+name: Build package
 on:
   workflow_call:
 permissions:
