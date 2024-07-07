@@ -1,5 +1,4 @@
-name: Publish Unstable
-
+name: Publish to PyPI
 on:
   push:
     branches:
@@ -22,5 +21,5 @@ jobs:
         with:
           name: release-dist
           path: dist/
-      - name: Publish to PyPI
+      - name: Upload to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
