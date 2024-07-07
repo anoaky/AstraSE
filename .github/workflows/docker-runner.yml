@@ -18,3 +18,5 @@ jobs:
           TOKEN: ${{ secrets.TOKEN }}
       - name: Cleanup
         run: docker image prune -f
+      - name: Show logs
+        run: python3 -m exendlr astra "ready"

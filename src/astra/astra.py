@@ -1,8 +1,7 @@
-import argparse
-import asyncio
 import discord
 import discord.ext.commands as commands
 import discord.app_commands as app_commands
+import sys
 
 from astra.connections import AstraDBConnection
 from astra.groups import *
@@ -17,7 +16,7 @@ class Astra(commands.Bot):
         await self.tree.sync()
         
     async def on_ready(self):
-        print('Ready!')
+        print('ready', file=sys.stderr)
         
     @app_commands.command(description='Version, changelog, and other info')
     async def info(self, interaction: discord.Interaction):
@@ -28,18 +27,3 @@ class Astra(commands.Bot):
 
             **New features:**
             - QUOTE GENERATION IS **BACK**. Run `/quote gen` to EXPERIENCE THE MAGIC.""", ephemeral=True)
-        
-if __name__ == '__main__':
-    def main():
-        parser = argparse.ArgumentParser()
-        parser.add_argument('token')
-        args = parser.parse_args()
-    
-        intents = discord.Intents.default()
-        intents.message_content = True
-        astra = Astra('!', intents=intents)
-        asyncio.run(astra.add_cog(DebugGroup(astra)))
-        asyncio.run(astra.add_cog(QuoteGroup(astra)))
-        astra.run(args.token)
-        
-    main()
