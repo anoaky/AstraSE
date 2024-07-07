@@ -9,8 +9,9 @@
 name: Build and Publish
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - 'stable-**'
 permissions:
   contents: read
 jobs:
@@ -48,3 +49,23 @@ jobs:
           path: dist/
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+  make-release:
+    runs-on: ubuntu-latest
+    needs: build-pkg
+    environment: release
+    steps:
+      - name: Retrieve build
+        uses: actions/download-artifact@v4
+        with:
+          name: release-dist
+          path: dist/
+      - name: Get version
+        run: |
+          source ./manifest ; echo "release_name=$(echo ${RELEASE_NAME})" >> $GITHUB_OUTPUT
+      - name: Make release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ RELEASE_NAME }}
+          body_path: ./CHANGELOG.txt
+          files: |
+            dist/**
