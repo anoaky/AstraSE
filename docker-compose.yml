@@ -4,6 +4,6 @@ services:
     build: .
     container_name: astra
     volumes:
-      - /home/astra-runner/astra-data:/app/data
+      - /root/astra-data:/app/data
     environment:
       - TOKEN
