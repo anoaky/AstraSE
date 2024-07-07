@@ -1,5 +1,5 @@
 # Changelog
 - Main file added as well as Docker container for running the bot.
 - Use environment variable TOKEN to specify your token.
-- Also, workflows.
+- Also, workflows to automatically start bot.
 - Fixed import statements in module
