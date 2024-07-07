@@ -19,9 +19,7 @@ jobs:
     uses: ./.github/workflows/build-package.yml
   make-release:
     runs-on: ubuntu-latest
-    needs: |
-      build-pkg
-      release-data
+    needs: build-pkg
     environment: release
     steps:
       - name: Retrieve build
