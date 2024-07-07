@@ -1,3 +1,4 @@
 #!/bin/bash
 
-export RELEASE_NAME="ASTRA: SE v1.1"
+export PROJECT_NAME="ASTRA: SE"
+export TAG="v1.1"
