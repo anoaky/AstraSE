@@ -27,13 +27,17 @@ jobs:
         with:
           name: release-dist
           path: dist/
-      - name: Get version
+      - name: Get release title
         run: |
-          source ./manifest ; echo "release_name=$(echo ${RELEASE_NAME})" >> $GITHUB_OUTPUT
+          source ./manifest ; echo "project_name=$(echo ${PROJECT_NAME})" >> $GITHUB_OUTPUT
+      - name: Get tag
+        run: |
+          source ./manifest ; echo "tag_name=$(echo ${TAG})" >> $GITHUB_OUTPUT
       - name: Make release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ RELEASE_NAME }}
+          name: ${{ PROJECT_NAME }} ${{ TAG_NAME }}
+          tag_name: ${{ TAG_NAME }}
           body_path: ./CHANGELOG.txt
           files: |
             dist/**
