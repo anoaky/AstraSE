@@ -2,7 +2,7 @@ import discord
 import discord.ext.commands as commands
 from discord import app_commands
 
-from connections import AstraHandler
+from astra.connections import AstraHandler
 
 @app_commands.allowed_contexts(guilds=True, dms=True, private_channels=True)
 class DebugGroup(commands.GroupCog, name='debug', group_name='debug'):

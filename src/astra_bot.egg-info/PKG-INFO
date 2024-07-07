@@ -1,18 +1,18 @@
 Metadata-Version: 2.1
 Name: astra-bot
-Version: 1.1
+Version: 1.2
 Summary: Discord bot capable of storing 'quotes' by users and simple construction of humorous sentences.
 Author-email: Anokhi Suresh <anokhi.suresh@mail.mcgill.ca>
 Project-URL: Homepage, https://github.com/anoaky/AstraSE
 Project-URL: Issues, https://github.com/anoaky/AstraSE/issues
 Classifier: Programming Language :: Python :: 3
-Classifier: License :: MIT License
+Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Requires-Python: >=3.11
 Description-Content-Type: text/markdown
 License-File: LICENSE
 
-# ASTRA : SE
-## A Simple Text Replacement Assistant: Special Edition
+# A Simple Text Recording Assistant (ASTRA): Special Edition
+![Release](https://github.com/anoaky/AstraSE/actions/workflows/publish-stable.yml/badge.svg) ![PyPI](https://github.com/anoaky/AstraSE/actions/workflows/publish-pypi.yml/badge.svg)
 
 Readme in progress.

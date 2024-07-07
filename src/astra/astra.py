@@ -4,8 +4,8 @@ import discord
 import discord.ext.commands as commands
 import discord.app_commands as app_commands
 
-from connections import AstraDBConnection
-from groups import *
+from astra.connections import AstraDBConnection
+from astra.groups import *
 
 class Astra(commands.Bot):
     def __init__(self, prefix, **kwargs):
@@ -24,12 +24,10 @@ class Astra(commands.Bot):
         await interaction.response.send_message(
             """
             **ASTRA: SE**
-            A Simple Text Recording Assistant: Slash Edition v1.1
+            A Simple Text Recording Assistant: Slash Edition v1.2
 
             **New features:**
-            - QUOTE GENERATION IS **BACK**. Run `/quote gen` to EXPERIENCE THE MAGIC.
-
-            **NB:** Currently being hosted on my PC, so will probably go offline at times. Do not be alarmed, for She will Return.""", ephemeral=True)
+            - QUOTE GENERATION IS **BACK**. Run `/quote gen` to EXPERIENCE THE MAGIC.""", ephemeral=True)
         
 if __name__ == '__main__':
     def main():

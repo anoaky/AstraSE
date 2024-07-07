@@ -1,0 +1,9 @@
+name: astra-se
+services:
+  main:
+    build: .
+    container_name: astra
+    volumes:
+      - /root/astra-data:/app/data
+    environment:
+      - TOKEN

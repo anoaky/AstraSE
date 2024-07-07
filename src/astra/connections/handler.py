@@ -1,7 +1,7 @@
 ﻿import discord
 
-from connections import AstraDBConnection
-from generation import AstraMarkovModel
+from astra.connections import AstraDBConnection
+from astra.generation import AstraMarkovModel
 
 class QuoteView(discord.ui.View):
     
