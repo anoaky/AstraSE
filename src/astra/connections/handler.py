@@ -1,4 +1,5 @@
 ﻿import discord
+import profanity_check
 
 from astra.connections import AstraDBConnection
 from astra.generation import AstraMarkovModel
@@ -102,3 +103,9 @@ class AstraHandler:
     @staticmethod
     async def debug_remove_quote(withIdent: int):
         AstraDBConnection.delete_quote(withIdent)
+        
+    @staticmethod
+    async def check_profanity(forMsg: discord.Message):
+        if profanity_check.predict([forMsg.clean_content])[0] == 1:
+            AstraDBConnection.incr_jar(forMsg.author.id)
+            await forMsg.add_reaction('🪙')

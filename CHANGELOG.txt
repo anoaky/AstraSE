@@ -1,5 +1,5 @@
 # Changelog
-- Main file added as well as Docker container for running the bot.
-- Use environment variable TOKEN to specify your token.
-- Also, workflows.
-- Fixed import statements in module
+- Swear jar now supported
+- Fixed issues with [pyproject](pyproject.toml) dependencies
+- Added [dimitrismistriotis/alt-profanity-check](https://github.com/dimitrismistriotis/alt-profanity-check).
+- Fixed `info` command

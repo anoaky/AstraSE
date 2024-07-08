@@ -17,6 +17,13 @@ class AstraDBConnection:
                 msg TEXT NOT NULL
             )"""
         )
+        cur.execute(
+            """CREATE TABLE IF NOT EXISTS jar(
+                user INTEGER NOT NULL,
+                swears INTEGER NOT NULL
+            )
+            """
+        )
         con.commit()
         con.close()
     
@@ -52,4 +59,26 @@ class AstraDBConnection:
     def query_all():
         con, cur = _connect()
         res = cur.execute('select msg from quotes').fetchall()
+        con.close()
         return [v[0] for v in res]
+    
+    @staticmethod
+    def get_jar(forUser: int):
+        con, cur = _connect()
+        res = cur.execute('SELECT swears FROM jar WHERE user=?', (forUser,)).fetchall()
+        con.close()
+        if len(res) == 0:
+            return 0
+        else:
+            return res[0][0]
+        
+    @staticmethod
+    def incr_jar(forUser: int):
+        con, cur = _connect()
+        current_swears = cur.execute('SELECT swears FROM jar WHERE user=?', (forUser,)).fetchall()
+        if len(current_swears) == 0:
+            cur.execute('INSERT INTO jar VALUES(?, 1)', (forUser,))
+        else:
+            cur.execute('UPDATE jar SET swears=? WHERE user=?', (current_swears[0][0]+1,forUser))
+        con.commit()
+        con.close()
