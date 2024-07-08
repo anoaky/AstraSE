@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools", "wheel", "discord", "markovify"]
+requires = ["setuptools", "wheel", "discord", "markovify", "profanity-check"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "astra-bot"
-version = "1.2.2"
+version = "1.3a3"
 authors = [
 	{ name="Anokhi Suresh", email="anokhi.suresh@mail.mcgill.ca" },
 ]
