@@ -17,6 +17,7 @@ if __name__ == '__main__':
     token = os.environ.get('TOKEN')
     intents = discord.Intents.default()
     intents.message_content = True
+    intents.members = True
     bot = astra.Astra('!', intents=intents)
     asyncio.run(add_groups(bot))
     bot.run(token)
