@@ -82,7 +82,7 @@ class AstraHandler:
         if forUser.id == interaction.user.id:
             await interaction.response.send_message(f'You have {coins} :coin: in your jar!')
         else:
-            await interaction.response.send_message(f'{forUser.name} has {coins} :coin: in their jar!')
+            await interaction.response.send_message(f'{forUser.mention} has {coins} :coin: in their jar!', allowed_mentions=discord.AllowedMentions.none())
     
     @staticmethod
     async def show_leaderboard(interaction: discord.Interaction):
