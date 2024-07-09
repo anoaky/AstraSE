@@ -2,7 +2,6 @@ import discord
 import discord.ext.commands as commands
 
 from astra.connections import AstraHandler
-from discord.utils import MISSING
 from discord import app_commands
 from typing import Optional
 
@@ -16,3 +15,7 @@ class JarGroup(commands.GroupCog, name='jar', group_name='jar'):
         if target is None:
             target = interaction.user
         await AstraHandler.jar_check(interaction, target)
+    
+    @app_commands.command(name='leaderboard', description='Get the server swear jar leaderboard.')
+    async def lb(self, interaction: discord.Interaction):
+        await AstraHandler.show_leaderboard(interaction)

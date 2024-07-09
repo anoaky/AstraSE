@@ -82,3 +82,17 @@ class AstraDBConnection:
             cur.execute('UPDATE jar SET swears=? WHERE user=?', (current_swears[0][0]+1,forUser))
         con.commit()
         con.close()
+        
+    @staticmethod
+    def query_leaderboard(forUsers: list[int]):
+        con, cur = _connect()
+        q = ', '.join(['?']*len(forUsers))
+        query = f"""
+        SELECT *
+        FROM jar
+        WHERE user IN ({q})
+        ORDER BY swears DESC
+        LIMIT 20"""
+        list = cur.execute(query, forUsers).fetchall()
+        con.close()
+        return list

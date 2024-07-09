@@ -8,10 +8,11 @@ from astra.groups import *
 
 info_text = """
 **ASTRA: SE**
-A Simple Text Recording Assistant: Special Edition v1.3.0
+A Simple Text Recording Assistant: Special Edition v1.3.1
 
 **New features:**
-- Swear jar! Watch your propfamtiy."""
+- Can now target other members to view their jar with optional argument to `jar check`
+- Can now view top 20 filthiest mouths in a server with `jar leaderboard`"""
 
 class Astra(commands.Bot):
     def __init__(self, prefix, **kwargs):

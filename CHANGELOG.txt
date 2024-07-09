@@ -1,5 +1,4 @@
 # Changelog
-- Swear jar now supported
-- Fixed issues with [pyproject](pyproject.toml) dependencies
-- Added [dimitrismistriotis/alt-profanity-check](https://github.com/dimitrismistriotis/alt-profanity-check).
-- Fixed `info` command
+- **Now requires Members intent.**
+- Can now target other members to view their jar with optional argument to `jar check`
+- Can now view top 20 filthiest mouths in a server with `jar leaderboard`

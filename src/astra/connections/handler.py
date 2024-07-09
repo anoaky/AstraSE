@@ -3,22 +3,13 @@ import profanity_check
 
 from astra.connections import AstraDBConnection
 from astra.generation import AstraMarkovModel
+from astra.base import AbstractPageView
 
-class QuoteView(discord.ui.View):
+class QuoteView(AbstractPageView):
     
-    def __init__(self, interaction: discord.Interaction, target: discord.Member | discord.User, raw: list[tuple[str, int]], perPage: int = 5):
-        self.interaction = interaction
-        self._raw = raw
-        self.total_pages = (len(raw) // perPage) + 1 if (len(raw) % perPage != 0) else (len(raw) // perPage)
-        self.page = 1
-        self.per_page = perPage
+    def __init__(self, *, interaction: discord.Interaction, target: discord.Member, raw: list[tuple[str, int]], perPage: int=5):
         self.target = target
-        super().__init__(timeout=60)
-        
-    async def show(self):
-        embed = await self.build_view()
-        await self.update_buttons()
-        await self.interaction.response.send_message(embed=embed, view=self)
+        super().__init__(interaction=interaction, raw=raw, perPage=perPage)
         
     async def build_view(self):
         start, end = (self.page - 1) * self.per_page, self.page * self.per_page
@@ -29,46 +20,21 @@ class QuoteView(discord.ui.View):
         embed.set_footer(text=f'Page {self.page} of {self.total_pages}')
         embed.set_thumbnail(url=self.target.display_avatar.url)
         return embed
+
+class JarView(AbstractPageView):
     
-    async def update_view(self, interaction: discord.Interaction):
-        embed = await self.build_view()
-        await self.update_buttons()
-        await interaction.response.edit_message(embed=embed, view=self)
+    def __init__(self, *, interaction: discord.Interaction, raw: list[tuple[int, int]], perPage: int=10):
+        super().__init__(interaction=interaction, raw=raw, perPage=perPage)
         
-    async def update_buttons(self):
-        self.children[0].disabled = (self.total_pages == 1 or self.page <= 2)
-        self.children[1].disabled = (self.total_pages == 1 or self.page == 1)
-        self.children[2].disabled = (self.total_pages == 1 or self.page == self.total_pages)
-        self.children[3].disabled = (self.total_pages == 1 or self.page >= self.total_pages - 1)
-        
-    async def interaction_check(self, interaction: discord.Interaction) -> bool:
-        return interaction.user.id == self.interaction.user.id
-       
-    @discord.ui.button(style=discord.ButtonStyle.secondary, emoji='⏮️')
-    async def first(self, interaction: discord.Interaction, button: discord.Button):
-        self.page = 1
-        await self.update_view(interaction)
-    
-    @discord.ui.button(style=discord.ButtonStyle.primary, emoji='⏪')
-    async def prev(self, interaction: discord.Interaction, button: discord.Button):
-        self.page -= 1
-        await self.update_view(interaction)
-        
-    @discord.ui.button(style=discord.ButtonStyle.primary, emoji='⏩')
-    async def succ(self, interaction: discord.Interaction, button: discord.Button):
-        self.page += 1
-        await self.update_view(interaction)
-        
-    @discord.ui.button(style=discord.ButtonStyle.secondary, emoji='⏭️')
-    async def last(self, interaction: discord.Interaction, button: discord.Button):
-        self.page = self.total_pages
-        await self.update_view(interaction)
-        
-    async def on_timeout(self):
-        message = await self.interaction.original_response()
-        await message.edit(view=None)
-    
-    
+    async def build_view(self):
+        start, end = (self.page - 1) * self.per_page, self.page * self.per_page
+        embed = discord.Embed(title=f'{self.interaction.guild.name} Leaderboard', description='**Showing the top 20**\n')
+        for (id, count) in self._raw[start:end]:
+            embed.description += f'\n{self.interaction.guild.get_member(id).display_name}: {count} 🪙\n'
+        embed.set_author(name=f'Requested by {self.interaction.user}')
+        embed.set_footer(text=f'Page {self.page} of {self.total_pages}')
+        embed.set_thumbnail(url=(self.interaction.guild.icon.url if self.interaction.guild.icon is not None else None))
+        return embed
 
 class AstraHandler:
     
@@ -89,7 +55,7 @@ class AstraHandler:
         if len(raw) == 0:
             await interaction.response.send_message('No quotes found.', ephemeral=True)
         else:
-            view = QuoteView(interaction, fromUser, raw)
+            view = QuoteView(interaction=interaction, target=fromUser, raw=raw)
             await view.show()
     
     @staticmethod
@@ -114,6 +80,15 @@ class AstraHandler:
     async def jar_check(interaction: discord.Interaction, forUser: discord.Member):
         coins = AstraDBConnection.get_jar(forUser.id)
         if forUser.id == interaction.user.id:
-            await interaction.response.send_message(f'You have {coins}:coin: in your jar!')
+            await interaction.response.send_message(f'You have {coins} :coin: in your jar!')
         else:
-            await interaction.response.send_message(f'{forUser.name} has {coins}:coin: in their jar!')
+            await interaction.response.send_message(f'{forUser.name} has {coins} :coin: in their jar!')
+    
+    @staticmethod
+    async def show_leaderboard(interaction: discord.Interaction):
+        members = [m.id for m in interaction.guild.members]
+        list = AstraDBConnection.query_leaderboard(members)
+        if len(list) == 0:
+            await interaction.response.send_message('No swears in this server, yet.', ephemeral=True)
+        else:
+            await JarView(interaction=interaction, raw=list).show()

@@ -3,6 +3,8 @@ README.md
 pyproject.toml
 src/astra/__init__.py
 src/astra/astra.py
+src/astra/base/__init__.py
+src/astra/base/pages.py
 src/astra/connections/__init__.py
 src/astra/connections/database.py
 src/astra/connections/handler.py
