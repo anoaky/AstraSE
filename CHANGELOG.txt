@@ -2,3 +2,4 @@
 - Now using ValX to detect profanity.
 - Adds a variable number of coins to swear jar depending on the number of swears.
 - Updated `info` command to be non-ephemeral when used by an Administrator.
+- **1.3.2.post1** ac6ef4ccf741f361fca1f50ce1b1cff5eafa516c
