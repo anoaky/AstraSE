@@ -12,6 +12,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Install package locally
+        run: python3 -m pip install .
       - name: Run Container
         run: docker compose up -d --build
         env:
