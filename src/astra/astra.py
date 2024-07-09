@@ -8,11 +8,11 @@ from astra.groups import *
 
 info_text = """
 **ASTRA: SE**
-A Simple Text Recording Assistant: Special Edition v1.3.1
+A Simple Text Recording Assistant: Special Edition v1.3.2
 
 **New features:**
-- Can now target other members to view their jar with optional argument to `jar check`
-- Can now view top 20 filthiest mouths in a server with `jar leaderboard`"""
+- Adds a variable number of coins to swear jar depending on the number of swears.
+- Updated `info` command to be non-ephemeral when used by an Administrator."""
 
 class Astra(commands.Bot):
     def __init__(self, prefix, **kwargs):
@@ -37,4 +37,4 @@ class Astra(commands.Bot):
         await AstraHandler.check_profanity(message)
         
     async def info(self, interaction: discord.Interaction):
-        await interaction.response.send_message(info_text, ephemeral=True)
+        await interaction.response.send_message(info_text, ephemeral=interaction.user.guild_permissions.administrator)

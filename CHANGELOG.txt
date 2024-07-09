@@ -1,5 +1,4 @@
 # Changelog
-- **Now requires Members intent.**
-- Can now target other members to view their jar with optional argument to `jar check`
-- Can now view top 20 filthiest mouths in a server with `jar leaderboard`
-- **Postfix 1:** Fixed the `jar check` message (anoaky@7284985de103fcf7cd20eb85b518276c96fc9383).
+- Now using ValX to detect profanity.
+- Adds a variable number of coins to swear jar depending on the number of swears.
+- Updated `info` command to be non-ephemeral when used by an Administrator.

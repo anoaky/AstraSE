@@ -1,9 +1,23 @@
-﻿import discord
-import profanity_check
+﻿import asyncio
+import discord
 
 from astra.connections import AstraDBConnection
 from astra.generation import AstraMarkovModel
 from astra.base import AbstractPageView
+from valx import detect_profanity
+
+numbers = [
+    '0️⃣',
+    '1️⃣',
+    '2️⃣',
+    '3️⃣',
+    '4️⃣',
+    '5️⃣',
+    '6️⃣',
+    '7️⃣',
+    '8️⃣',
+    '9️⃣'
+]
 
 class QuoteView(AbstractPageView):
     
@@ -72,9 +86,20 @@ class AstraHandler:
         
     @staticmethod
     async def check_profanity(forMsg: discord.Message):
-        if profanity_check.predict([forMsg.clean_content])[0] == 1:
-            AstraDBConnection.incr_jar(forMsg.author.id)
-            await forMsg.add_reaction('🪙')
+        profanity_count = detect_profanity([forMsg.clean_content])
+        print(profanity_count)
+        if profanity_count > 0:
+            AstraDBConnection.incr_jar(forUser=forMsg.author.id, byAmount=profanity_count)
+            reacts = []
+            n = profanity_count
+            while n > 9:
+                last_digit = n % 10
+                reacts.insert(-1, numbers[last_digit])
+                n = n // 10
+            reacts.insert(-1, numbers[n])
+            for react in reacts:
+                await forMsg.add_reaction(react)
+                await asyncio.sleep(0.5)
             
     @staticmethod
     async def jar_check(interaction: discord.Interaction, forUser: discord.Member):

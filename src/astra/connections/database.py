@@ -73,13 +73,13 @@ class AstraDBConnection:
             return res[0][0]
         
     @staticmethod
-    def incr_jar(forUser: int):
+    def incr_jar(*, forUser: int, byAmount: int=1):
         con, cur = _connect()
         current_swears = cur.execute('SELECT swears FROM jar WHERE user=?', (forUser,)).fetchall()
         if len(current_swears) == 0:
-            cur.execute('INSERT INTO jar VALUES(?, 1)', (forUser,))
+            cur.execute('INSERT INTO jar VALUES(?, ?)', (forUser, byAmount))
         else:
-            cur.execute('UPDATE jar SET swears=? WHERE user=?', (current_swears[0][0]+1,forUser))
+            cur.execute('UPDATE jar SET swears=? WHERE user=?', (current_swears[0][0]+byAmount,forUser))
         con.commit()
         con.close()
         
