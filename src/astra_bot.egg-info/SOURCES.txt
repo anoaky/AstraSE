@@ -10,6 +10,7 @@ src/astra/generation/__init__.py
 src/astra/generation/model.py
 src/astra/groups/__init__.py
 src/astra/groups/debug.py
+src/astra/groups/jar.py
 src/astra/groups/quote.py
 src/astra_bot.egg-info/PKG-INFO
 src/astra_bot.egg-info/SOURCES.txt

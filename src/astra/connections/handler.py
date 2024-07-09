@@ -109,3 +109,11 @@ class AstraHandler:
         if profanity_check.predict([forMsg.clean_content])[0] == 1:
             AstraDBConnection.incr_jar(forMsg.author.id)
             await forMsg.add_reaction('🪙')
+            
+    @staticmethod
+    async def jar_check(interaction: discord.Interaction, forUser: discord.Member):
+        coins = AstraDBConnection.get_jar(forUser.id)
+        if forUser.id == interaction.user.id:
+            await interaction.response.send_message(f'You have {coins}:coin: in your jar!')
+        else:
+            await interaction.response.send_message(f'{forUser.name} has {coins}:coin: in their jar!')

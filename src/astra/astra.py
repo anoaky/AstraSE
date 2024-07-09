@@ -19,10 +19,7 @@ class Astra(commands.Bot):
         base_cmds = [
             app_commands.Command(name='info',
                                  description='Version, changelog, and other info',
-                                 callback=self.info),
-            app_commands.Command(name='jar',
-                                 description='Check your swear jar',
-                                 callback=self.jar)
+                                 callback=self.info)
         ]
         for cmd in base_cmds:
             self.tree.add_command(cmd)
@@ -40,7 +37,3 @@ class Astra(commands.Bot):
         
     async def info(self, interaction: discord.Interaction):
         await interaction.response.send_message(info_text, ephemeral=True)
-        
-    async def jar(self, interaction: discord.Interaction):
-        coins = AstraDBConnection.get_jar(interaction.user.id)
-        await interaction.response.send_message(f'You have **{coins}**:coin: in your jar!')

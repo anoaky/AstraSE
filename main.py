@@ -6,7 +6,8 @@ import astra
 async def add_groups(bot):
     groups = [
         astra.groups.DebugGroup(bot),
-        astra.groups.QuoteGroup(bot)
+        astra.groups.QuoteGroup(bot),
+        astra.groups.JarGroup(bot)
     ]
     async with asyncio.TaskGroup() as tg:
         for grp in groups:
