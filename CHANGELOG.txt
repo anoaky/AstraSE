@@ -2,4 +2,4 @@
 - **Now requires Members intent.**
 - Can now target other members to view their jar with optional argument to `jar check`
 - Can now view top 20 filthiest mouths in a server with `jar leaderboard`
-- **Postfix 1:** Updated Docker file to use local package instead of pulling from PyPI (anoaky@87f4cd830614a4640ac48564d8eee1fede7de9b8) and fixed the `jar check` message (anoaky@7284985de103fcf7cd20eb85b518276c96fc9383).
+- **Postfix 1:** Fixed the `jar check` message (anoaky@7284985de103fcf7cd20eb85b518276c96fc9383).
