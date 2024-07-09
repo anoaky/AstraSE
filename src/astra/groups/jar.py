@@ -19,3 +19,4 @@ class JarGroup(commands.GroupCog, name='jar', group_name='jar'):
     @app_commands.command(name='leaderboard', description='Get the server swear jar leaderboard.')
     async def lb(self, interaction: discord.Interaction):
         await AstraHandler.show_leaderboard(interaction)
+        
