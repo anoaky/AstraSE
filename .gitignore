@@ -8,3 +8,4 @@ data/
 /server_config.json
 /generation/model.py
 /build
+*/astra_bot.egg-info/
