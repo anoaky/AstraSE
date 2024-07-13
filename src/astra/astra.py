@@ -33,8 +33,9 @@ class Astra(commands.Bot):
     async def on_ready(self):
         print('ready', file=sys.stderr)
         
-    async def on_message(self, message):
-        await AstraHandler.check_profanity(message)
+    async def on_message(self, message: discord.Message):
+        if message.author.id != self.user.id:
+            await AstraHandler.check_profanity(message)
         
     async def info(self, interaction: discord.Interaction):
         await interaction.response.send_message(info_text, ephemeral=interaction.user.guild_permissions.administrator)
