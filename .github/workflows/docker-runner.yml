@@ -19,6 +19,6 @@ jobs:
       - name: Cleanup Images
         run: docker image prune -f
       - name: Cleanup Containers
-        run: docker system prune -a
+        run: docker system prune -a -f
       - name: Show logs
         run: python3 -m exendlr astra "ready"
