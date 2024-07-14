@@ -34,7 +34,9 @@ class Astra(commands.Bot):
         print('ready', file=sys.stderr)
         
     async def on_message(self, message: discord.Message):
-        if message.author.id != self.user.id:
+        if message.author.bot:
+            return
+        else:
             await AstraHandler.check_profanity(message)
         
     async def info(self, interaction: discord.Interaction):
