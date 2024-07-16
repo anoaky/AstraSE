@@ -3,7 +3,7 @@ import discord
 
 from astra.connections import AstraDBConnection
 from astra.generation import AstraMarkovModel
-from astra.base import AbstractPageView
+from astra.ui import QuoteView, JarView
 from valx import detect_profanity
 
 numbers = [
@@ -18,37 +18,6 @@ numbers = [
     '8️⃣',
     '9️⃣'
 ]
-
-class QuoteView(AbstractPageView):
-    
-    def __init__(self, *, interaction: discord.Interaction, target: discord.Member, raw: list[tuple[str, int]], perPage: int=5):
-        self.target = target
-        super().__init__(interaction=interaction, raw=raw, perPage=perPage)
-        
-    async def build_view(self):
-        start, end = (self.page - 1) * self.per_page, self.page * self.per_page
-        embed = discord.Embed(title=self.target, description='')
-        for (msg, ind) in self._raw[start:end]:
-            embed.description += f'#{ind}: "{msg}"\n\n'
-        embed.set_author(name=f'Requested by {self.interaction.user}')
-        embed.set_footer(text=f'Page {self.page} of {self.total_pages}')
-        embed.set_thumbnail(url=self.target.display_avatar.url)
-        return embed
-
-class JarView(AbstractPageView):
-    
-    def __init__(self, *, interaction: discord.Interaction, raw: list[tuple[int, int]], perPage: int=10):
-        super().__init__(interaction=interaction, raw=raw, perPage=perPage)
-        
-    async def build_view(self):
-        start, end = (self.page - 1) * self.per_page, self.page * self.per_page
-        embed = discord.Embed(title=f'{self.interaction.guild.name} Leaderboard', description='**Showing the top 20**\n')
-        for (id, count) in self._raw[start:end]:
-            embed.description += f'\n{self.interaction.guild.get_member(id).display_name}: {count} 🪙\n'
-        embed.set_author(name=f'Requested by {self.interaction.user}')
-        embed.set_footer(text=f'Page {self.page} of {self.total_pages}')
-        embed.set_thumbnail(url=(self.interaction.guild.icon.url if self.interaction.guild.icon is not None else None))
-        return embed
 
 class AstraHandler:
     
