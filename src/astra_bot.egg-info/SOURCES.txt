@@ -8,6 +8,8 @@ src/astra/base/pages.py
 src/astra/connections/__init__.py
 src/astra/connections/database.py
 src/astra/connections/handler.py
+src/astra/exceptions/__init__.py
+src/astra/exceptions/db_exceptions.py
 src/astra/generation/__init__.py
 src/astra/generation/model.py
 src/astra/groups/__init__.py
