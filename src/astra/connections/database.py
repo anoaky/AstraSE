@@ -1,4 +1,5 @@
 import sqlite3
+from astra.exceptions import QuoteAddError
 
 def _connect():
     con = sqlite3.connect('data/astra.db')
@@ -32,7 +33,11 @@ class AstraDBConnection:
         con, cur = _connect()
         cur.execute('insert into quotes values(NULL, ?, ?)', (user, msg))
         con.commit()
+        new_id = cur.execute('SELECT id FROM quotes WHERE user = ? AND msg = ?', (user, msg)).fetchall()
+        if len(new_id) == 0:
+            raise QuoteAddError
         con.close()
+        return new_id[0][0]
         
     @staticmethod
     def search_quote(fromUser: int, withMsg: str):

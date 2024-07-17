@@ -2,6 +2,7 @@
 import discord
 
 from astra.connections import AstraDBConnection
+from astra.exceptions import QuoteAddError
 from astra.generation import AstraMarkovModel
 from astra.base import AbstractPageView
 from valx import detect_profanity
@@ -59,9 +60,12 @@ class AstraHandler:
         if await AstraHandler.does_quote_exist(user, msg):
             await interaction.response.send_message('Quote already present.', ephemeral=True)
         else:
-            AstraDBConnection().add_quote(user.id, msg)
-            await interaction.response.send_message(f'Quoted {user.mention} saying "{msg}"')
-            AstraMarkovModel().initialize_model()
+            try:
+                new_id = AstraDBConnection().add_quote(user.id, msg)
+                await interaction.response.send_message(f'Added #{new_id} {user.mention}: "{msg}"')
+                AstraMarkovModel().initialize_model()
+            except QuoteAddError:
+                await interaction.response.send_message(f'Failed to add quote; database issue likely.', ephemeral=True)
         
     @staticmethod
     async def read_quotes(interaction: discord.Interaction, fromUser: discord.Member | discord.User):
