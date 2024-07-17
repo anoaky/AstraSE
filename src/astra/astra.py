@@ -8,11 +8,10 @@ from astra.groups import *
 
 info_text = """
 **ASTRA: SE**
-A Simple Text Recording Assistant: Special Edition v1.3.2
+A Simple Text Recording Assistant: Special Edition v1.3.3
 
 **New features:**
-- Adds a variable number of coins to swear jar depending on the number of swears.
-- Updated `info` command to be non-ephemeral when used by an Administrator."""
+- Changed the reply to `/quote add` to include the ID of the new quote."""
 
 class Astra(commands.Bot):
     def __init__(self, prefix, **kwargs):
