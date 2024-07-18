@@ -3,11 +3,10 @@ README.md
 pyproject.toml
 src/astra/__init__.py
 src/astra/astra.py
-src/astra/base/__init__.py
-src/astra/base/pages.py
 src/astra/connections/__init__.py
 src/astra/connections/database.py
 src/astra/connections/handler.py
+src/astra/connections/vrchat.py
 src/astra/exceptions/__init__.py
 src/astra/exceptions/db_exceptions.py
 src/astra/generation/__init__.py
@@ -16,6 +15,12 @@ src/astra/groups/__init__.py
 src/astra/groups/debug.py
 src/astra/groups/jar.py
 src/astra/groups/quote.py
+src/astra/groups/vrc.py
+src/astra/ui/__init__.py
+src/astra/ui/jar_ui.py
+src/astra/ui/pages.py
+src/astra/ui/quote_ui.py
+src/astra/ui/vrc_ui.py
 src/astra_bot.egg-info/PKG-INFO
 src/astra_bot.egg-info/SOURCES.txt
 src/astra_bot.egg-info/dependency_links.txt
