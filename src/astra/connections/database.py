@@ -40,11 +40,12 @@ class AstraDBConnection:
         return new_id[0][0]
         
     @staticmethod
-    def search_quote(fromUser: int, withMsg: str):
+    def check_quote(fromUser: int, withMsg: str):
         con, cur = _connect()
-        res = cur.execute('select id from quotes where user = ? and msg = ?', (fromUser, withMsg)).fetchall()
+        res = cur.execute('SELECT EXISTS(SELECT 1 FROM quotes WHERE user=? AND msg=?)', (fromUser, withMsg)).fetchall()
         con.close()
-        return res
+        print(res)
+        return res[0][0] == 1
     
     @staticmethod
     def read_quotes(fromUser: int):

@@ -8,6 +8,11 @@ data/
 /server_config.json
 /generation/model.py
 /build
+.venv/
+*/astra_bot.egg-info/
+PKG-INFO
 AstraSE.code-workspace
 .venv/
 .venv/*
+src/astra_bot.egg-info/requires.txt
+src/astra_bot.egg-info/SOURCES.txt

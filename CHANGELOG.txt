@@ -1,2 +1,2 @@
 # Changelog
-- Changed the reply to `/quote add` to include the ID of the new quote.
+- Fixed "Quote already present" issue after `debug remove`.
