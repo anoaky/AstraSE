@@ -80,9 +80,9 @@ class AstraHandler:
     async def does_quote_exist(fromUser: discord.Member | discord.User, withMsg: str | discord.Message, /):
         if isinstance(withMsg, discord.Message):
             withMsg = withMsg.clean_content
-        result = AstraDBConnection.search_quote(fromUser.id, withMsg)
+        result = AstraDBConnection.check_quote(fromUser.id, withMsg)
         print(result)
-        return len(result) > 0
+        return result
     
     @staticmethod
     async def debug_remove_quote(withIdent: int):
