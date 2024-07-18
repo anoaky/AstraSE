@@ -8,5 +8,6 @@ data/
 /server_config.json
 /generation/model.py
 /build
+.venv/
 */astra_bot.egg-info/
 AstraSE.code-workspace
